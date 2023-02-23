@@ -24,7 +24,9 @@ defmodule Master.Operations do
     mimics the UNIX command "touch"
   """
   def touch_operration(parent_folder_path, file_name) do
-
+    Database.FileAccess.write_to_file_access_table(
+      [folder_path: parent_folder_path, file_name: "b.txt", file_size: 0, type: "folder"]
+    )
   end
 
   @doc """

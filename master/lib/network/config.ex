@@ -20,7 +20,7 @@ defmodule Network.Config do
   @doc """
     Get master IP
   """
-  def get_master_ip(), do: {192, 168, 29, 43}
+  def get_master_ip(), do: {172, 20, 10, 3}
 
 
   @doc """

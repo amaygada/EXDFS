@@ -18,7 +18,7 @@ defmodule Master.TCPServer do
         packet: :line,
         active: false,
         reuseaddr: true,
-        ip: {192, 168, 29, 43}
+        ip: Network.Config.get_master_ip()
       ]
     )
     Logger.info("Accepting connections on port #{port}")
@@ -44,8 +44,9 @@ defmodule Master.TCPServer do
   """
   defp serve(socket) do
     case read_line(socket) do
-      {:ok, _data} ->
+      {:ok, data} ->
         # do operation depending on data received here
+        IO.inspect(data)
         serve(socket)
       {:error, err} ->
         IO.puts(IO.ANSI.red() <> "Connection has been terminated  =>  Reason: " <> Atom.to_string(err) <> IO.ANSI.reset())

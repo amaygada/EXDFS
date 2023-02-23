@@ -70,7 +70,7 @@ defmodule Database.FileAccess do
 
   @doc """
     Checks if file exists
-    Takes as input folder path and file name
+    Takes as input parent folder path and file name
   """
   def does_file_exist(attributes) do
     trans = Mnesia.transaction(
@@ -85,9 +85,35 @@ defmodule Database.FileAccess do
 
     case trans do
       {:ok, :read_successful, []} ->
-        {:ok, "file doesn't exist"}
+        {:error, "file doesn't exist"}
       {:ok, :read_successful, _} ->
         {:ok, "file exists"}
+      _ ->
+        trans
+    end
+  end
+
+
+  @doc """
+    Checks if folder exists
+    Takes as input folder path
+  """
+  def does_folder_exist(attributes) do
+    trans = Mnesia.transaction(
+      fn ->
+        Mnesia.match_object(
+          {
+            File_Access_Table,
+            :_, attributes[:folder_path], :_, :_, :_ }
+          )
+      end
+    ) |> Database.Init.check_transactions()
+
+    case trans do
+      {:ok, :read_successful, []} ->
+        {:error, "folder doesn't exist"}
+      {:ok, :read_successful, _} ->
+        {:ok, "folder exists"}
       _ ->
         trans
     end

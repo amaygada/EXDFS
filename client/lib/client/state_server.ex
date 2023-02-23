@@ -78,7 +78,7 @@ defmodule Client.StateServer do
         IO.puts(IO.ANSI.red() <> "Connection has been terminated" <> IO.ANSI.reset())
         {:reply, {:error, :closed}, state}
       {:error, reason} ->
-        IO.puts(IO.ANSI.red() <> "Connection has been terminated" <> IO.ANSI.reset())
+        IO.puts(IO.ANSI.red() <> "There was an error" <> IO.ANSI.reset())
         IO.inspect(reason)
         {:reply, {:error, reason}, state}
     end
@@ -109,16 +109,16 @@ defmodule Client.StateServer do
   @doc """
     SEND MESSAGE TO MASTER NODE OVER TCP
   """
-  def send_message(server, message) do
-    GenServer.call(server, {:send_tcp, message})
+  def send_message(message) do
+    GenServer.call(Client.StateServer, {:send_tcp, message})
   end
 
 
   @doc """
     RECEIVE MESSAGES FROM MASTER NODE OVER TCP
   """
-  def recv_message(server) do
-    GenServer.call(server, {:recv})
+  def recv_message() do
+    GenServer.call(Client.StateServer, {:recv})
   end
 
 end

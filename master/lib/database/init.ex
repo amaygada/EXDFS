@@ -93,6 +93,9 @@ defmodule Database.Init do
     end
 
     Database.ID.write_to_id(0)
+    Database.FileAccess.write_to_file_access_table(
+      [folder_path: "/", file_name: "", file_size: 0, type: "folder"]
+    )
 
     {:ok, "Tables Created and ID Table Initialized"}
   end
